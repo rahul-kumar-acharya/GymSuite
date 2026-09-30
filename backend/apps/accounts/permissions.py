@@ -23,6 +23,13 @@ class GymRolePermission(permissions.BasePermission):
 class CanManageMembers(GymRolePermission):
     allowed_roles = {'OWNER', 'MANAGER', 'STAFF'}
 
+class CanViewAssignedMembers(GymRolePermission):
+    allowed_roles = {'OWNER', 'MANAGER', 'STAFF', 'TRAINER'}
+
+
+class CanViewMemberAttendance(GymRolePermission):
+    allowed_roles = {'OWNER', 'MANAGER', 'STAFF', 'TRAINER', 'MEMBER'}
+
 
 class CanManageMemberships(GymRolePermission):
     allowed_roles = {'OWNER', 'MANAGER', 'STAFF'}

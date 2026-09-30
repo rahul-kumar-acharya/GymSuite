@@ -5,6 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Member
 from .serializers import MemberOnboardSerializer, MemberSerializer
 from apps.accounts.permissions import CanAccessMemberSelf, CanManageMembers
+from apps.accounts.permissions import CanAccessMemberSelf, CanManageMembers, CanViewAssignedMembers
 from apps.accounts.services import record_audit
 
 class MemberViewSet(viewsets.ModelViewSet):
@@ -22,11 +23,15 @@ class MemberViewSet(viewsets.ModelViewSet):
         queryset = Member.objects.filter(gym=user.gym)
         if user.role == 'MEMBER':
             return queryset.filter(user=user)
+        if user.role == 'TRAINER':
+            return queryset.filter(assigned_trainers__user=user).distinct()
         return queryset
 
     def get_permissions(self):
         if self.action == 'me':
             return [CanAccessMemberSelf()]
+        if self.action == 'list' and self.request.user.role == 'TRAINER':
+            return [CanViewAssignedMembers()]
         return super().get_permissions()
 
     def perform_create(self, serializer):

@@ -47,9 +47,16 @@ import { Notifications } from '../pages/owner/Notifications';
 
 // Trainer Pages
 import { TrainerDashboard } from '../pages/trainer/TrainerDashboard';
+import { TrainerMembers } from '../pages/trainer/TrainerMembers';
+import { TrainerWorkouts } from '../pages/trainer/TrainerWorkouts';
+import { TrainerProfile } from '../pages/trainer/TrainerProfile';
 
 // Member Pages
 import { MemberDashboard } from '../pages/member/MemberDashboard';
+import { MemberMembership } from '../pages/member/MemberMembership';
+import { MemberAttendance } from '../pages/member/MemberAttendance';
+import { MemberWorkouts } from '../pages/member/MemberWorkouts';
+import { MemberProfile } from '../pages/member/MemberProfile';
 
 // Error Page
 import { NotFound } from '../pages/errors/NotFound';
@@ -113,9 +120,9 @@ export const AppRoutes = () => {
         <Route path="/workouts" element={<Workouts />} />
         <Route path="/expenses" element={<Expenses />} />
         <Route path="/reports" element={<Reports />} />
-        <Route path="/staff" element={<Staff />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/subscription" element={<SaaSSubscription />} />
+        <Route path="/settings" element={<ProtectedRoute allowedRoles={['OWNER']}><Settings /></ProtectedRoute>} />
+        <Route path="/staff" element={<ProtectedRoute allowedRoles={['OWNER']}><Staff /></ProtectedRoute>} />
+        <Route path="/subscription" element={<ProtectedRoute allowedRoles={['OWNER']}><SaaSSubscription /></ProtectedRoute>} />
         <Route path="/notifications" element={<Notifications />} />
       </Route>
 
@@ -128,9 +135,9 @@ export const AppRoutes = () => {
         }
       >
         <Route path="/trainer/dashboard" element={<TrainerDashboard />} />
-        <Route path="/trainer/members" element={<TrainerDashboard />} />
-        <Route path="/trainer/workouts" element={<TrainerDashboard />} />
-        <Route path="/trainer/profile" element={<TrainerDashboard />} />
+        <Route path="/trainer/members" element={<TrainerMembers />} />
+        <Route path="/trainer/workouts" element={<TrainerWorkouts />} />
+        <Route path="/trainer/profile" element={<TrainerProfile />} />
       </Route>
 
       {/* Member Portal Routes */}
@@ -142,10 +149,10 @@ export const AppRoutes = () => {
         }
       >
         <Route path="/member/dashboard" element={<MemberDashboard />} />
-        <Route path="/member/membership" element={<MemberDashboard />} />
-        <Route path="/member/attendance" element={<MemberDashboard />} />
-        <Route path="/member/workout" element={<MemberDashboard />} />
-        <Route path="/member/profile" element={<MemberDashboard />} />
+        <Route path="/member/membership" element={<MemberMembership />} />
+        <Route path="/member/attendance" element={<MemberAttendance />} />
+        <Route path="/member/workout" element={<MemberWorkouts />} />
+        <Route path="/member/profile" element={<MemberProfile />} />
       </Route>
 
       {/* 404 Fallback */}

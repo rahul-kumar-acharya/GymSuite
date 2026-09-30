@@ -1,0 +1,8 @@
+import React, { useEffect, useState } from 'react';
+import api from '../../services/api';
+
+export const MemberMembership = () => {
+  const [memberships, setMemberships] = useState([]);
+  useEffect(() => { api.get('/memberships/assigned/').then((response) => setMemberships(response.data.results || response.data)); }, []);
+  return <section className="mx-auto max-w-2xl space-y-6"><header><h1 className="font-heading text-2xl font-bold text-espresso-800">Membership</h1><p className="text-xs text-mutedGray">Your active plan and membership history.</p></header><div className="space-y-3">{memberships.length ? memberships.map((membership) => <article key={membership.id} className="rounded-2xl border border-sand bg-white p-5 shadow-xs"><div className="flex flex-wrap justify-between gap-3"><h2 className="font-heading text-lg font-bold text-espresso-800">{membership.plan_name || 'Membership plan'}</h2><span className="rounded-full bg-statusGreen-bg px-3 py-1 text-[10px] font-bold text-statusGreen-text">{membership.status}</span></div><div className="mt-4 grid grid-cols-2 gap-4 text-xs"><div><span className="block text-mutedGray">Starts</span><strong>{membership.start_date}</strong></div><div><span className="block text-mutedGray">Ends</span><strong>{membership.end_date}</strong></div><div><span className="block text-mutedGray">Days remaining</span><strong>{membership.days_remaining}</strong></div><div><span className="block text-mutedGray">Paid</span><strong>₹{membership.price_at_purchase}</strong></div></div></article>) : <p className="text-xs text-mutedGray">No membership history available.</p>}</div></section>;
+};

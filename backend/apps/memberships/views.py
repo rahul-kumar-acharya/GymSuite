@@ -10,6 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import MembershipPlan, MemberMembership
 from .serializers import MembershipPlanSerializer, MemberMembershipSerializer
 from apps.accounts.permissions import CanManageMemberships, CanViewGymData
+from apps.accounts.permissions import CanAccessMemberSelf, CanManageMemberships, CanViewGymData
 from apps.payments.models import Payment
 
 class MembershipPlanViewSet(viewsets.ModelViewSet):
@@ -31,6 +32,11 @@ class MembershipPlanViewSet(viewsets.ModelViewSet):
 class MemberMembershipViewSet(viewsets.ModelViewSet):
     serializer_class = MemberMembershipSerializer
     permission_classes = [CanViewGymData]
+
+    def get_permissions(self):
+        if self.request.user.role == 'MEMBER' and self.action in {'list', 'retrieve'}:
+            return [CanAccessMemberSelf()]
+        return super().get_permissions()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['status', 'member', 'plan']
     search_fields = ['member__full_name', 'member__member_id_code', 'plan__name']
@@ -40,6 +46,10 @@ class MemberMembershipViewSet(viewsets.ModelViewSet):
         if not user.gym:
             return MemberMembership.objects.none()
         return MemberMembership.objects.filter(gym=user.gym)
+        queryset = MemberMembership.objects.filter(gym=user.gym)
+        if user.role == 'MEMBER' and hasattr(user, 'member_profile'):
+            queryset = queryset.filter(member=user.member_profile)
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(gym=self.request.user.gym)

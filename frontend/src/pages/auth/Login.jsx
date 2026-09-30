@@ -23,7 +23,9 @@ export const Login = () => {
       
       // Role-based redirection logic strictly decided by backend response
       const role = userData.role;
-      if (role === 'OWNER' || role === 'MANAGER' || role === 'STAFF' || role === 'SUPERADMIN') {
+      if (role === 'SUPERADMIN') {
+        navigate('/admin/dashboard');
+      } else if (role === 'OWNER' || role === 'MANAGER' || role === 'STAFF') {
         navigate('/dashboard');
       } else if (role === 'TRAINER') {
         navigate('/trainer/dashboard');

@@ -108,6 +108,8 @@ export const AdminLayout = () => {
         </main>
       </div>
 
+      {sidebarOpen && <div className="fixed inset-0 z-50 lg:hidden"><button type="button" aria-label="Close admin navigation overlay" className="absolute inset-0 bg-espresso-900/70" onClick={() => setSidebarOpen(false)} /><aside className="relative z-10 flex h-full w-72 max-w-[85vw] flex-col bg-espresso-900 text-cream-100 shadow-xl"><div className="flex h-20 items-center justify-between border-b border-espresso-800 px-5"><span className="font-heading text-lg font-bold">Super Admin</span><button type="button" aria-label="Close admin navigation" onClick={() => setSidebarOpen(false)}><X className="h-5 w-5" /></button></div><nav className="flex-1 space-y-1 overflow-y-auto p-4">{navItems.map((item) => { const Icon = item.icon; return <Link key={item.path} to={item.path} onClick={() => setSidebarOpen(false)} className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium ${location.pathname === item.path ? 'bg-brass-500 text-espresso-900' : 'text-cream-200/80 hover:bg-espresso-800'}`}><Icon className="h-5 w-5" /><span>{item.label}</span></Link>; })}</nav></aside></div>}
+
     </div>
   );
 };

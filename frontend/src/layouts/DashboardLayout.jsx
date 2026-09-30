@@ -58,7 +58,7 @@ export const DashboardLayout = () => {
         </div>
 
         {/* 2. Middle-Left Box: Compact Nav Links (Zero Scroll) */}
-        <nav className="flex-grow p-2 space-y-0.5 overflow-hidden flex flex-col justify-around no-scrollbar">
+        <nav className="flex-grow p-2 space-y-0.5 overflow-y-auto flex flex-col no-scrollbar">
           {filteredNav.map((item) => {
             const Icon = item.icon;
             const active = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));

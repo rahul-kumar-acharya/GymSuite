@@ -9,12 +9,20 @@ from django.utils import timezone
 from apps.accounts.permissions import CanManageAttendance
 from django.core import signing
 from apps.accounts.permissions import CanAccessAttendanceQr, CanManageAttendance
+from apps.accounts.permissions import CanAccessAttendanceQr, CanManageAttendance, CanViewMemberAttendance
 from apps.accounts.services import record_audit
 from apps.memberships.models import MemberMembership
 
 class AttendanceViewSet(viewsets.ModelViewSet):
     serializer_class = AttendanceSerializer
     permission_classes = [CanManageAttendance]
+
+    def get_permissions(self):
+        if self.request.user.role == 'MEMBER' and self.action == 'list':
+            return [CanViewMemberAttendance()]
+        if self.action == 'qr_token':
+            return [CanAccessAttendanceQr()]
+        return super().get_permissions()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['date', 'method', 'member']
     search_fields = ['member__full_name', 'member__member_id_code']
@@ -25,6 +33,10 @@ class AttendanceViewSet(viewsets.ModelViewSet):
         if not user.gym:
             return Attendance.objects.none()
         return Attendance.objects.filter(gym=user.gym)
+        queryset = Attendance.objects.filter(gym=user.gym)
+        if user.role == 'MEMBER' and hasattr(user, 'member_profile'):
+            queryset = queryset.filter(member=user.member_profile)
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(gym=self.request.user.gym)

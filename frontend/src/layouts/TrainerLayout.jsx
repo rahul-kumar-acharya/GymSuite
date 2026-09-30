@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Dumbbell, Users, ClipboardList, User, LogOut } from 'lucide-react';
+import { Dumbbell, Users, ClipboardList, User, LogOut, Menu, X } from 'lucide-react';
 
 export const TrainerLayout = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
   const handleLogout = () => {
     logout();
@@ -97,6 +98,7 @@ export const TrainerLayout = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            <button type="button" aria-label="Open trainer navigation" onClick={() => setSidebarOpen(true)} className="lg:hidden rounded-lg border border-sand p-2 text-espresso-800"><Menu className="h-5 w-5" /></button>
             <button onClick={handleLogout} className="px-3.5 py-1.5 rounded-lg border border-sand text-xs font-bold text-espresso-800 hover:bg-statusRed-bg hover:text-statusRed-text">
               Logout
             </button>
@@ -108,6 +110,8 @@ export const TrainerLayout = () => {
           <Outlet />
         </main>
       </div>
+
+      {sidebarOpen && <div className="fixed inset-0 z-50 lg:hidden"><button type="button" aria-label="Close trainer navigation overlay" className="absolute inset-0 bg-espresso-900/60" onClick={() => setSidebarOpen(false)} /><aside className="relative z-10 flex h-full w-72 max-w-[85vw] flex-col bg-white shadow-xl"><div className="flex h-20 items-center justify-between border-b border-sand px-5"><span className="font-heading text-lg font-bold text-espresso-800">Trainer Portal</span><button type="button" aria-label="Close trainer navigation" onClick={() => setSidebarOpen(false)}><X className="h-5 w-5" /></button></div><nav className="flex-1 space-y-1 overflow-y-auto p-4">{navItems.map((item) => { const Icon = item.icon; return <Link key={item.path} to={item.path} onClick={() => setSidebarOpen(false)} className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium ${location.pathname === item.path ? 'bg-espresso-800 text-cream-100' : 'text-espresso-800 hover:bg-cream-100'}`}><Icon className="h-5 w-5" /><span>{item.label}</span></Link>; })}</nav></aside></div>}
 
     </div>
   );
