@@ -30,6 +30,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'role', 'gym', 'gym_name', 'avatar', 'email_verified']
         read_only_fields = ['id', 'username', 'role', 'gym', 'gym_name', 'email_verified']
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance.is_superuser:
+            data['role'] = 'SUPERADMIN'
+        return data
+
     def validate_email(self, value):
         user = self.instance
         if User.objects.filter(email__iexact=value).exclude(pk=user.pk if user else None).exists():
@@ -97,7 +103,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             'email': user.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
-            'role': user.role,
+            'role': 'SUPERADMIN' if user.is_superuser else user.role,
+            'is_superuser': user.is_superuser,
             'gym': user.gym.id if user.gym else None,
             'gym_name': user.gym.name if user.gym else None,
         }

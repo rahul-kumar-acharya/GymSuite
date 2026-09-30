@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle, Dumbbell } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle, Dumbbell, Eye, EyeOff } from 'lucide-react';
 
 export const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -81,13 +82,16 @@ export const AdminLogin = () => {
             <div className="relative">
               <Lock className="w-5 h-5 text-cream-200/50 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-xl border border-espresso-700 bg-espresso-900 text-cream-100 text-sm focus:outline-none focus:border-brass-400 font-medium"
+                className="w-full pl-11 pr-12 py-3 rounded-xl border border-espresso-700 bg-espresso-900 text-cream-100 text-sm focus:outline-none focus:border-brass-400 font-medium"
                 placeholder="••••••••"
               />
+              <button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} onClick={() => setShowPassword((visible) => !visible)} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-cream-200/60 hover:text-brass-400">
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
             </div>
           </div>
 

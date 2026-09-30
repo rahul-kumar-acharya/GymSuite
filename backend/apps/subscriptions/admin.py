@@ -6,9 +6,15 @@ class SaaSPlanAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'price_monthly', 'max_members', 'is_active')
     list_filter = ('is_active',)
     search_fields = ('name', 'slug', 'description')
+    prepopulated_fields = {'slug': ('name',)}
+    ordering = ('price_monthly', 'name')
 
 @admin.register(GymSubscription)
 class GymSubscriptionAdmin(admin.ModelAdmin):
     list_display = ('gym', 'plan', 'status', 'trial_start', 'trial_end', 'active_until')
     list_filter = ('status', 'plan')
     search_fields = ('gym__name',)
+    list_select_related = ('gym', 'plan')
+    autocomplete_fields = ('gym', 'plan')
+    readonly_fields = ('trial_start', 'days_left')
+    ordering = ('-trial_start',)

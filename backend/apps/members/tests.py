@@ -105,3 +105,14 @@ class MemberWorkflowTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.owner.refresh_from_db()
         self.assertTrue(self.owner.check_password('new-strong-pass-123'))
+
+    def test_django_superuser_is_returned_as_superadmin(self):
+        User.objects.create_superuser(
+            username='root', email='root@example.com', password='root-pass-123'
+        )
+        response = self.client.post('/api/v1/auth/login/', {
+            'username': 'root',
+            'password': 'root-pass-123',
+        }, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['user']['role'], 'SUPERADMIN')
