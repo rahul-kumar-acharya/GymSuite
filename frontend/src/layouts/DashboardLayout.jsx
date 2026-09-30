@@ -30,11 +30,13 @@ export const DashboardLayout = () => {
     { label: 'Reports', path: '/reports', icon: BarChart3 },
     { label: 'Staff Management', path: '/staff', icon: UserCog, ownerOnly: true },
     { label: 'Notifications', path: '/notifications', icon: Bell },
-    { label: 'Gym Settings', path: '/settings', icon: Settings },
+    { label: 'My Profile', path: '/profile', icon: UserCog },
+    { label: 'Gym Settings', path: '/settings', icon: Settings, ownerOnly: true },
     { label: 'SaaS Subscription', path: '/subscription', icon: Crown, ownerOnly: true },
   ];
 
   const filteredNav = navItems.filter(item => !item.ownerOnly || user?.role === 'OWNER');
+  const isActive = (path) => location.pathname === path || (path !== '/dashboard' && location.pathname.startsWith(`${path}/`));
 
   return (
     <div className="min-h-screen bg-cream-100 flex font-sans text-charcoal overflow-hidden h-screen">
@@ -61,7 +63,7 @@ export const DashboardLayout = () => {
         <nav className="flex-grow p-2 space-y-0.5 overflow-y-auto flex flex-col no-scrollbar">
           {filteredNav.map((item) => {
             const Icon = item.icon;
-            const active = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
+            const active = isActive(item.path);
             return (
               <Link
                 key={item.path}
@@ -179,7 +181,7 @@ export const DashboardLayout = () => {
             <nav className="flex-grow p-3 space-y-1 overflow-y-auto no-scrollbar">
               {filteredNav.map((item) => {
                 const Icon = item.icon;
-                const active = location.pathname === item.path;
+                const active = isActive(item.path);
                 return (
                   <Link
                     key={item.path}

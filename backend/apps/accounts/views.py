@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import default_token_generator
-from .serializers import AuditLogSerializer, PasswordResetConfirmSerializer, PasswordResetRequestSerializer, StaffSerializer, UserSerializer, VerifyEmailSerializer, CustomTokenObtainPairSerializer, RegisterOwnerSerializer
+from .serializers import AuditLogSerializer, ChangePasswordSerializer, PasswordResetConfirmSerializer, PasswordResetRequestSerializer, StaffSerializer, UserSerializer, VerifyEmailSerializer, CustomTokenObtainPairSerializer, RegisterOwnerSerializer
 from .permissions import CanManageStaff, CanViewAuditLogs
 from .models import AuditLog
 from django.contrib.auth import get_user_model
@@ -44,6 +44,17 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class ChangePasswordView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ChangePasswordSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'Password updated successfully.'})
 
 
 class PasswordResetRequestView(generics.GenericAPIView):

@@ -27,8 +27,36 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'role', 'gym', 'gym_name', 'avatar']
-        read_only_fields = ['id', 'role', 'gym_name']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'role', 'gym', 'gym_name', 'avatar', 'email_verified']
+        read_only_fields = ['id', 'username', 'role', 'gym', 'gym_name', 'email_verified']
+
+    def validate_email(self, value):
+        user = self.instance
+        if User.objects.filter(email__iexact=value).exclude(pk=user.pk if user else None).exists():
+            raise serializers.ValidationError('An account with this email already exists.')
+        return value
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        user = self.context['request'].user
+        if not user.check_password(attrs['current_password']):
+            raise serializers.ValidationError({'current_password': 'Current password is incorrect.'})
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({'confirm_password': 'Passwords do not match.'})
+        if attrs['current_password'] == attrs['new_password']:
+            raise serializers.ValidationError({'new_password': 'New password must be different.'})
+        return attrs
+
+    def save(self, **kwargs):
+        user = self.context['request'].user
+        user.set_password(self.validated_data['new_password'])
+        user.save(update_fields=['password'])
+        return user
 
 
 class StaffSerializer(serializers.ModelSerializer):

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { ShieldCheck, Building2, Crown, Users, FileText, LogOut, Menu, X } from 'lucide-react';
+import { ShieldCheck, Building2, Crown, Users, FileText, LogOut, Menu, X, UserRound } from 'lucide-react';
 
 export const AdminLayout = () => {
   const { user, logout } = useAuth();
@@ -20,6 +20,7 @@ export const AdminLayout = () => {
     { label: 'SaaS Subscriptions', path: '/admin/subscriptions', icon: Crown },
     { label: 'Platform Users', path: '/admin/users', icon: Users },
     { label: 'System Logs', path: '/admin/logs', icon: FileText },
+    { label: 'My Profile', path: '/admin/profile', icon: UserRound },
   ];
 
   return (

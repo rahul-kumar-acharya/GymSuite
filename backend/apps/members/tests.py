@@ -88,3 +88,20 @@ class MemberWorkflowTests(APITestCase):
         self.assertEqual(scan_response.status_code, 201)
         self.assertEqual(duplicate_response.status_code, 200)
         self.assertEqual(Attendance.objects.filter(member=member).count(), 1)
+
+    def test_password_change_requires_current_password_and_confirmation(self):
+        response = self.client.post('/api/v1/auth/change-password/', {
+            'current_password': 'wrong-password',
+            'new_password': 'new-strong-pass-123',
+            'confirm_password': 'new-strong-pass-123',
+        }, format='json')
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.post('/api/v1/auth/change-password/', {
+            'current_password': 'strong-pass-123',
+            'new_password': 'new-strong-pass-123',
+            'confirm_password': 'new-strong-pass-123',
+        }, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.owner.refresh_from_db()
+        self.assertTrue(self.owner.check_password('new-strong-pass-123'))

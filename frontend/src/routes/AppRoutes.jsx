@@ -42,6 +42,7 @@ import { Expenses } from '../pages/owner/Expenses';
 import { Reports } from '../pages/owner/Reports';
 import { Staff } from '../pages/owner/Staff';
 import { Settings } from '../pages/owner/Settings';
+import { AccountProfile } from '../components/AccountProfile';
 import { SaaSSubscription } from '../pages/owner/SaaSSubscription';
 import { Notifications } from '../pages/owner/Notifications';
 
@@ -101,6 +102,7 @@ export const AppRoutes = () => {
         <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/logs" element={<AdminLogs />} />
+        <Route path="/admin/profile" element={<AccountProfile title="Platform profile" subtitle="Manage your administrator account and password." />} />
       </Route>
 
       {/* Gym Owner & Staff Dashboard Routes */}
@@ -121,6 +123,7 @@ export const AppRoutes = () => {
         <Route path="/expenses" element={<Expenses />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/settings" element={<ProtectedRoute allowedRoles={['OWNER']}><Settings /></ProtectedRoute>} />
+          <Route path="/profile" element={<AccountProfile />} />
         <Route path="/staff" element={<ProtectedRoute allowedRoles={['OWNER']}><Staff /></ProtectedRoute>} />
         <Route path="/subscription" element={<ProtectedRoute allowedRoles={['OWNER']}><SaaSSubscription /></ProtectedRoute>} />
         <Route path="/notifications" element={<Notifications />} />
