@@ -29,6 +29,9 @@ class AttendanceSerializer(serializers.ModelSerializer):
         gym = self.context['request'].user.gym
         member = attrs.get('member')
         date = attrs.get('date', timezone.now().date())
+
+        if not member or member.gym_id != gym.id:
+            raise serializers.ValidationError({'member': 'Member does not belong to this gym.'})
         
         # Check active membership status on check-in
         has_active = MemberMembership.objects.filter(
@@ -38,7 +41,6 @@ class AttendanceSerializer(serializers.ModelSerializer):
         ).exists()
 
         if not has_active:
-            # We don't block check-in outright, but add a warning note if missing
-            attrs['notes'] = (attrs.get('notes') or '') + ' [Warning: Expired Membership]'
+            raise serializers.ValidationError({'member': 'Member does not have an active membership.'})
 
         return attrs

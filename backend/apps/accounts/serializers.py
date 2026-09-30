@@ -1,11 +1,26 @@
+import secrets
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.conf import settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.db import transaction
 from apps.gyms.models import Gym
 from apps.subscriptions.models import GymSubscription, SaaSPlan
+from .models import AuditLog
 
 User = get_user_model()
+
+
+class AuditLogSerializer(serializers.ModelSerializer):
+    user_name = serializers.ReadOnlyField(source='user.get_full_name')
+
+    class Meta:
+        model = AuditLog
+        fields = ['id', 'gym', 'user', 'user_name', 'action', 'entity', 'entity_id', 'metadata', 'created_at']
+        read_only_fields = fields
 
 class UserSerializer(serializers.ModelSerializer):
     gym_name = serializers.ReadOnlyField(source='gym.name')
@@ -14,6 +29,35 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'role', 'gym', 'gym_name', 'avatar']
         read_only_fields = ['id', 'role', 'gym_name']
+
+
+class StaffSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=6, required=False)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'phone', 'role', 'password', 'is_active', 'date_joined']
+        read_only_fields = ['id', 'username', 'date_joined']
+
+    def validate_role(self, value):
+        if value not in {'MANAGER', 'STAFF'}:
+            raise serializers.ValidationError('Staff accounts can only be MANAGER or STAFF.')
+        return value
+
+    def create(self, validated_data):
+        request = self.context['request']
+        password = validated_data.pop('password', None)
+        email = validated_data['email'].strip().lower()
+        if User.objects.filter(email__iexact=email).exists():
+            raise serializers.ValidationError({'email': 'An account with this email already exists.'})
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=password or secrets.token_urlsafe(16),
+            gym=request.user.gym,
+            **validated_data,
+        )
+        return user
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -90,3 +134,33 @@ class RegisterOwnerSerializer(serializers.Serializer):
                 )
 
             return user
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def save(self):
+        user = User.objects.filter(email__iexact=self.validated_data['email'], is_active=True).first()
+        if user:
+            token = default_token_generator.make_token(user)
+            url = f"{getattr(settings, 'FRONTEND_URL', 'http://localhost:5173')}/reset-password/{user.pk}/{token}"
+            send_mail('Reset your GymSuite password', f'Use this link to reset your password: {url}', None, [user.email], fail_silently=True)
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    uid = serializers.IntegerField()
+    token = serializers.CharField()
+    new_password = serializers.CharField(min_length=8, write_only=True)
+
+    def save(self):
+        user = User.objects.filter(pk=self.validated_data['uid'], is_active=True).first()
+        if not user or not default_token_generator.check_token(user, self.validated_data['token']):
+            raise serializers.ValidationError({'token': 'This reset link is invalid or expired.'})
+        user.set_password(self.validated_data['new_password'])
+        user.save(update_fields=['password'])
+        return user
+
+
+class VerifyEmailSerializer(serializers.Serializer):
+    uid = serializers.IntegerField()
+    token = serializers.CharField()

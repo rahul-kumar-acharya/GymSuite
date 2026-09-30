@@ -3,18 +3,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Gym
 from .serializers import GymSerializer
-from apps.accounts.permissions import IsSuperAdminUser
+from apps.accounts.permissions import CanManageGymSettings, IsSuperAdminUser
 from apps.accounts.serializers import UserSerializer
 from apps.members.models import Member
 from apps.subscriptions.models import GymSubscription, SaaSPlan
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
+from drf_spectacular.utils import extend_schema
 
 User = get_user_model()
 
 class CurrentGymView(generics.RetrieveUpdateAPIView):
     serializer_class = GymSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [CanManageGymSettings]
 
     def get_object(self):
         return self.request.user.gym
@@ -22,6 +23,7 @@ class CurrentGymView(generics.RetrieveUpdateAPIView):
 class SuperAdminStatsView(APIView):
     permission_classes = [IsSuperAdminUser]
 
+    @extend_schema(responses=dict)
     def get(self, request):
         total_gyms = Gym.objects.count()
         active_trials = Gym.objects.filter(status='TRIAL').count()

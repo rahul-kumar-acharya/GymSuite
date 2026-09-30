@@ -1,3 +1,6 @@
+import csv
+
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
@@ -10,10 +13,14 @@ from apps.memberships.models import MemberMembership, MembershipPlan
 from apps.attendance.models import Attendance
 from apps.payments.models import Payment
 from apps.expenses.models import Expense
+from apps.accounts.permissions import CanViewGymData
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 
 class DashboardStatsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [CanViewGymData]
 
+    @extend_schema(responses=dict)
     def get(self, request):
         user = request.user
         gym = user.gym
@@ -90,3 +97,17 @@ class DashboardStatsView(APIView):
             'recent_payments': recent_payments_data,
             'recent_checkins': recent_checkins_data
         })
+
+
+class PaymentsCsvView(APIView):
+    permission_classes = [CanViewGymData]
+
+    @extend_schema(responses={200: OpenApiResponse(response=OpenApiTypes.BINARY, description='CSV payment export')})
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="payments.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['Receipt', 'Member', 'Amount Paid', 'Total Amount', 'Status', 'Method', 'Date'])
+        for payment in Payment.objects.filter(gym=request.user.gym).select_related('member'):
+            writer.writerow([payment.receipt_no, payment.member.full_name, payment.amount_paid, payment.total_amount, payment.payment_status, payment.payment_method, payment.payment_date])
+        return response

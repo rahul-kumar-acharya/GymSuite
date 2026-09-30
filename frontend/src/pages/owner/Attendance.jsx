@@ -1,16 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { CalendarCheck, QrCode, Search, CheckCircle2, AlertTriangle, Clock } from 'lucide-react';
+import { CalendarCheck, QrCode, Search, CheckCircle2, AlertTriangle, Clock, Camera, X } from 'lucide-react';
 
 export const Attendance = () => {
   const [attendances, setAttendances] = useState([]);
   const [loading, setLoading] = useState(true);
   const [memberCodeInput, setMemberCodeInput] = useState('');
   const [checkinMessage, setCheckinMessage] = useState(null);
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   useEffect(() => {
     fetchTodayAttendance();
   }, []);
+
+  useEffect(() => {
+    if (!scannerOpen) return undefined;
+    let scanner;
+    let cancelled = false;
+    import('html5-qrcode').then(({ Html5Qrcode }) => {
+      if (cancelled) return;
+      scanner = new Html5Qrcode('attendance-qr-reader');
+      return scanner.start(
+        { facingMode: 'environment' },
+        { fps: 10, qrbox: { width: 240, height: 240 } },
+        async (decodedText) => {
+          try {
+            const res = await api.post('/attendance/scan/', { token: decodedText });
+            setCheckinMessage({ type: 'success', text: res.data.message });
+            fetchTodayAttendance();
+            setScannerOpen(false);
+          } catch (err) {
+            setCheckinMessage({ type: 'error', text: err.response?.data?.error || 'QR check-in failed.' });
+          }
+        },
+        () => {}
+      );
+    }).catch(() => setCheckinMessage({ type: 'error', text: 'Camera access could not be started.' }));
+    return () => {
+      cancelled = true;
+      scanner?.stop().catch(() => {});
+    };
+  }, [scannerOpen]);
 
   const fetchTodayAttendance = async () => {
     try {
@@ -76,7 +106,30 @@ export const Attendance = () => {
           >
             <span>Log Check-in</span>
           </button>
+          <button
+            type="button"
+            onClick={() => setScannerOpen(true)}
+            className="w-full sm:w-auto px-6 py-3 rounded-xl border border-brass-500 text-espresso-800 text-xs font-bold hover:bg-cream-100 transition-all flex items-center justify-center gap-2"
+          >
+            <Camera className="w-4 h-4" />
+            <span>Scan QR</span>
+          </button>
         </form>
+
+      {scannerOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-espresso-900/70 p-4" role="dialog" aria-modal="true" aria-labelledby="attendance-scanner-title">
+          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 id="attendance-scanner-title" className="font-heading text-lg font-bold text-espresso-800">Scan member QR</h3>
+              <button type="button" onClick={() => setScannerOpen(false)} aria-label="Close QR scanner" className="text-mutedGray hover:text-espresso-800">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div id="attendance-qr-reader" className="overflow-hidden rounded-xl" />
+            <p className="mt-3 text-center text-xs text-mutedGray">Point the camera at the member QR code.</p>
+          </div>
+        </div>
+      )}
 
         {/* Checkin Result Message */}
         {checkinMessage && (

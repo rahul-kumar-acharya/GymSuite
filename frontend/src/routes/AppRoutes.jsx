@@ -20,6 +20,7 @@ import { PrivacyPolicy, Terms, RefundPolicy } from '../pages/public/LegalPages';
 // Auth Pages
 import { Login } from '../pages/auth/Login';
 import { Register } from '../pages/auth/Register';
+import { PasswordReset } from '../pages/auth/PasswordReset';
 
 // Super Admin Pages
 import { AdminLogin } from '../pages/admin/AdminLogin';
@@ -42,6 +43,7 @@ import { Reports } from '../pages/owner/Reports';
 import { Staff } from '../pages/owner/Staff';
 import { Settings } from '../pages/owner/Settings';
 import { SaaSSubscription } from '../pages/owner/SaaSSubscription';
+import { Notifications } from '../pages/owner/Notifications';
 
 // Trainer Pages
 import { TrainerDashboard } from '../pages/trainer/TrainerDashboard';
@@ -75,6 +77,8 @@ export const AppRoutes = () => {
       {/* Public Auth Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<PasswordReset />} />
+      <Route path="/reset-password/:uid/:token" element={<PasswordReset />} />
 
       {/* Super Admin Auth & Control Panel Routes */}
       <Route path="/admin/login" element={<AdminLogin />} />
@@ -112,7 +116,7 @@ export const AppRoutes = () => {
         <Route path="/staff" element={<Staff />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/subscription" element={<SaaSSubscription />} />
-        <Route path="/notifications" element={<Dashboard />} />
+        <Route path="/notifications" element={<Notifications />} />
       </Route>
 
       {/* Trainer Portal Routes */}

@@ -1,0 +1,4990 @@
+openapi: 3.0.3
+info:
+  title: GymSuite API
+  version: 1.0.0
+  description: Multi-tenant gym management API.
+paths:
+  /api/v1/attendance/:
+    get:
+      operationId: v1_attendance_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAttendanceList'
+          description: ''
+    post:
+      operationId: v1_attendance_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+  /api/v1/attendance/{id}/:
+    get:
+      operationId: v1_attendance_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+    put:
+      operationId: v1_attendance_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+    patch:
+      operationId: v1_attendance_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAttendance'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+    delete:
+      operationId: v1_attendance_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/attendance/checkin-by-code/:
+    post:
+      operationId: v1_attendance_checkin_by_code_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+  /api/v1/attendance/qr-token/:
+    get:
+      operationId: v1_attendance_qr_token_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+  /api/v1/attendance/scan/:
+    post:
+      operationId: v1_attendance_scan_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+          description: ''
+  /api/v1/auth/audit-logs/:
+    get:
+      operationId: v1_auth_audit_logs_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditLogList'
+          description: ''
+  /api/v1/auth/audit-logs/{id}/:
+    get:
+      operationId: v1_auth_audit_logs_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLog'
+          description: ''
+  /api/v1/auth/login/:
+    post:
+      operationId: v1_auth_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomTokenObtainPair'
+          description: ''
+  /api/v1/auth/password-reset/:
+    post:
+      operationId: v1_auth_password_reset_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetRequest'
+          description: ''
+  /api/v1/auth/password-reset/confirm/:
+    post:
+      operationId: v1_auth_password_reset_confirm_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirm'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetConfirm'
+          description: ''
+  /api/v1/auth/profile/:
+    get:
+      operationId: v1_auth_profile_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: v1_auth_profile_update
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: v1_auth_profile_partial_update
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/auth/refresh/:
+    post:
+      operationId: v1_auth_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/auth/register/:
+    post:
+      operationId: v1_auth_register_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterOwner'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterOwner'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterOwner'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterOwner'
+          description: ''
+  /api/v1/auth/staff/:
+    get:
+      operationId: v1_auth_staff_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStaffList'
+          description: ''
+    post:
+      operationId: v1_auth_staff_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Staff'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Staff'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Staff'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Staff'
+          description: ''
+  /api/v1/auth/staff/{id}/:
+    get:
+      operationId: v1_auth_staff_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Staff'
+          description: ''
+    put:
+      operationId: v1_auth_staff_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Staff'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Staff'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Staff'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Staff'
+          description: ''
+    patch:
+      operationId: v1_auth_staff_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStaff'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStaff'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStaff'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Staff'
+          description: ''
+    delete:
+      operationId: v1_auth_staff_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/verify-email/:
+    post:
+      operationId: v1_auth_verify_email_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyEmail'
+          description: ''
+  /api/v1/expenses/:
+    get:
+      operationId: v1_expenses_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExpenseList'
+          description: ''
+    post:
+      operationId: v1_expenses_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Expense'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Expense'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+          description: ''
+  /api/v1/expenses/{id}/:
+    get:
+      operationId: v1_expenses_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+          description: ''
+    put:
+      operationId: v1_expenses_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Expense'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Expense'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+          description: ''
+    patch:
+      operationId: v1_expenses_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExpense'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExpense'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExpense'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+          description: ''
+    delete:
+      operationId: v1_expenses_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gyms/profile/:
+    get:
+      operationId: v1_gyms_profile_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+          description: ''
+    put:
+      operationId: v1_gyms_profile_update
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Gym'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Gym'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Gym'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+          description: ''
+    patch:
+      operationId: v1_gyms_profile_partial_update
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGym'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGym'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGym'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+          description: ''
+  /api/v1/gyms/superadmin/all-gyms/:
+    get:
+      operationId: v1_gyms_superadmin_all_gyms_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGymList'
+          description: ''
+    post:
+      operationId: v1_gyms_superadmin_all_gyms_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Gym'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Gym'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Gym'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+          description: ''
+  /api/v1/gyms/superadmin/all-gyms/{id}/:
+    get:
+      operationId: v1_gyms_superadmin_all_gyms_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this gym.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+          description: ''
+    put:
+      operationId: v1_gyms_superadmin_all_gyms_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this gym.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Gym'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Gym'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Gym'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+          description: ''
+    patch:
+      operationId: v1_gyms_superadmin_all_gyms_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this gym.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGym'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGym'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGym'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+          description: ''
+    delete:
+      operationId: v1_gyms_superadmin_all_gyms_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this gym.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gyms/superadmin/all-users/:
+    get:
+      operationId: v1_gyms_superadmin_all_users_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: v1_gyms_superadmin_all_users_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/gyms/superadmin/all-users/{id}/:
+    get:
+      operationId: v1_gyms_superadmin_all_users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: v1_gyms_superadmin_all_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: v1_gyms_superadmin_all_users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: v1_gyms_superadmin_all_users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/gyms/superadmin/stats/:
+    get:
+      operationId: v1_gyms_superadmin_stats_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/members/:
+    get:
+      operationId: v1_members_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMemberList'
+          description: ''
+    post:
+      operationId: v1_members_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Member'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Member'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+          description: ''
+  /api/v1/members/{id}/:
+    get:
+      operationId: v1_members_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+          description: ''
+    put:
+      operationId: v1_members_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Member'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Member'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+          description: ''
+    patch:
+      operationId: v1_members_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMember'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+          description: ''
+    delete:
+      operationId: v1_members_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/members/me/:
+    get:
+      operationId: v1_members_me_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+          description: ''
+  /api/v1/members/onboard/:
+    post:
+      operationId: v1_members_onboard_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Member'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Member'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+          description: ''
+  /api/v1/memberships/assigned/:
+    get:
+      operationId: v1_memberships_assigned_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMemberMembershipList'
+          description: ''
+    post:
+      operationId: v1_memberships_assigned_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberMembership'
+          description: ''
+  /api/v1/memberships/assigned/{id}/:
+    get:
+      operationId: v1_memberships_assigned_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberMembership'
+          description: ''
+    put:
+      operationId: v1_memberships_assigned_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberMembership'
+          description: ''
+    patch:
+      operationId: v1_memberships_assigned_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMemberMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMemberMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMemberMembership'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberMembership'
+          description: ''
+    delete:
+      operationId: v1_memberships_assigned_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/memberships/assigned/{id}/cancel/:
+    post:
+      operationId: v1_memberships_assigned_cancel_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberMembership'
+          description: ''
+  /api/v1/memberships/assigned/{id}/freeze/:
+    post:
+      operationId: v1_memberships_assigned_freeze_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberMembership'
+          description: ''
+  /api/v1/memberships/assigned/{id}/renew/:
+    post:
+      operationId: v1_memberships_assigned_renew_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MemberMembership'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberMembership'
+          description: ''
+  /api/v1/memberships/plans/:
+    get:
+      operationId: v1_memberships_plans_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMembershipPlanList'
+          description: ''
+    post:
+      operationId: v1_memberships_plans_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MembershipPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MembershipPlan'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembershipPlan'
+          description: ''
+  /api/v1/memberships/plans/{id}/:
+    get:
+      operationId: v1_memberships_plans_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembershipPlan'
+          description: ''
+    put:
+      operationId: v1_memberships_plans_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MembershipPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MembershipPlan'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembershipPlan'
+          description: ''
+    patch:
+      operationId: v1_memberships_plans_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMembershipPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMembershipPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMembershipPlan'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembershipPlan'
+          description: ''
+    delete:
+      operationId: v1_memberships_plans_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/:
+    get:
+      operationId: v1_notifications_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+    post:
+      operationId: v1_notifications_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/{id}/:
+    get:
+      operationId: v1_notifications_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    put:
+      operationId: v1_notifications_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    patch:
+      operationId: v1_notifications_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    delete:
+      operationId: v1_notifications_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/{id}/mark-read/:
+    post:
+      operationId: v1_notifications_mark_read_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/mark-all-read/:
+    post:
+      operationId: v1_notifications_mark_all_read_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/payments/:
+    get:
+      operationId: v1_payments_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPaymentList'
+          description: ''
+    post:
+      operationId: v1_payments_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Payment'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/v1/payments/{id}/:
+    get:
+      operationId: v1_payments_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+    put:
+      operationId: v1_payments_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Payment'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+    patch:
+      operationId: v1_payments_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPayment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPayment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPayment'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+    delete:
+      operationId: v1_payments_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/payments/{id}/checkout/:
+    post:
+      operationId: v1_payments_checkout_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Payment'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/v1/payments/{id}/receipt-pdf/:
+    get:
+      operationId: v1_payments_receipt_pdf_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/v1/payments/{id}/refund/:
+    post:
+      operationId: v1_payments_refund_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Payment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Payment'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/v1/reports/dashboard/:
+    get:
+      operationId: v1_reports_dashboard_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/reports/payments.csv:
+    get:
+      operationId: v1_reports_payments.csv_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+          description: CSV payment export
+  /api/v1/subscriptions/my-subscription/:
+    get:
+      operationId: v1_subscriptions_my_subscription_retrieve
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GymSubscription'
+          description: ''
+  /api/v1/subscriptions/plans/:
+    get:
+      operationId: v1_subscriptions_plans_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSaaSPlanList'
+          description: ''
+  /api/v1/trainers/:
+    get:
+      operationId: v1_trainers_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTrainerProfileList'
+          description: ''
+    post:
+      operationId: v1_trainers_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainerProfile'
+          description: ''
+  /api/v1/trainers/{id}/:
+    get:
+      operationId: v1_trainers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainerProfile'
+          description: ''
+    put:
+      operationId: v1_trainers_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainerProfile'
+          description: ''
+    patch:
+      operationId: v1_trainers_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTrainerProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTrainerProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTrainerProfile'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainerProfile'
+          description: ''
+    delete:
+      operationId: v1_trainers_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/trainers/{id}/assign/:
+    post:
+      operationId: v1_trainers_assign_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainerProfile'
+          description: ''
+  /api/v1/trainers/{id}/unassign/:
+    post:
+      operationId: v1_trainers_unassign_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TrainerProfile'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainerProfile'
+          description: ''
+  /api/v1/workouts/days/:
+    get:
+      operationId: v1_workouts_days_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkoutDayList'
+          description: ''
+    post:
+      operationId: v1_workouts_days_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutDay'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkoutDay'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkoutDay'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutDay'
+          description: ''
+  /api/v1/workouts/days/{id}/:
+    get:
+      operationId: v1_workouts_days_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutDay'
+          description: ''
+    put:
+      operationId: v1_workouts_days_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutDay'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkoutDay'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkoutDay'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutDay'
+          description: ''
+    patch:
+      operationId: v1_workouts_days_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutDay'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutDay'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutDay'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutDay'
+          description: ''
+    delete:
+      operationId: v1_workouts_days_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/workouts/exercises/:
+    get:
+      operationId: v1_workouts_exercises_list
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkoutExerciseList'
+          description: ''
+    post:
+      operationId: v1_workouts_exercises_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutExercise'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkoutExercise'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkoutExercise'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutExercise'
+          description: ''
+  /api/v1/workouts/exercises/{id}/:
+    get:
+      operationId: v1_workouts_exercises_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutExercise'
+          description: ''
+    put:
+      operationId: v1_workouts_exercises_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutExercise'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkoutExercise'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkoutExercise'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutExercise'
+          description: ''
+    patch:
+      operationId: v1_workouts_exercises_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutExercise'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutExercise'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutExercise'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutExercise'
+          description: ''
+    delete:
+      operationId: v1_workouts_exercises_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/workouts/plans/:
+    get:
+      operationId: v1_workouts_plans_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkoutPlanList'
+          description: ''
+    post:
+      operationId: v1_workouts_plans_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkoutPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkoutPlan'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutPlan'
+          description: ''
+  /api/v1/workouts/plans/{id}/:
+    get:
+      operationId: v1_workouts_plans_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutPlan'
+          description: ''
+    put:
+      operationId: v1_workouts_plans_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkoutPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkoutPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkoutPlan'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutPlan'
+          description: ''
+    patch:
+      operationId: v1_workouts_plans_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutPlan'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutPlan'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkoutPlan'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkoutPlan'
+          description: ''
+    delete:
+      operationId: v1_workouts_plans_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Attendance:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        member:
+          type: integer
+        member_name:
+          type: string
+          readOnly: true
+        member_code:
+          type: string
+          readOnly: true
+        date:
+          type: string
+          format: date
+        check_in:
+          type: string
+          format: time
+        check_out:
+          type: string
+          format: time
+          nullable: true
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        notes:
+          type: string
+          nullable: true
+          maxLength: 255
+        membership_status:
+          type: string
+          readOnly: true
+      required:
+      - gym
+      - id
+      - member
+      - member_code
+      - member_name
+      - membership_status
+    AuditLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+          nullable: true
+        user:
+          type: integer
+          readOnly: true
+          nullable: true
+        user_name:
+          type: string
+          readOnly: true
+        action:
+          type: string
+          readOnly: true
+        entity:
+          type: string
+          readOnly: true
+        entity_id:
+          type: string
+          readOnly: true
+          nullable: true
+        metadata:
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - action
+      - created_at
+      - entity
+      - entity_id
+      - gym
+      - id
+      - metadata
+      - user
+      - user_name
+    CategoryEnum:
+      enum:
+      - RENT
+      - ELECTRICITY
+      - EQUIPMENT
+      - MAINTENANCE
+      - SALARY
+      - MARKETING
+      - OTHER
+      type: string
+      description: |-
+        * `RENT` - Gym Rent
+        * `ELECTRICITY` - Electricity & Water
+        * `EQUIPMENT` - Equipment & Repairs
+        * `MAINTENANCE` - Facility Maintenance
+        * `SALARY` - Staff & Trainer Salary
+        * `MARKETING` - Marketing & Ads
+        * `OTHER` - Other Expenses
+    CustomTokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    Expense:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        category_display:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        expense_date:
+          type: string
+          format: date
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - amount
+      - category_display
+      - created_at
+      - gym
+      - id
+      - title
+    GenderEnum:
+      enum:
+      - MALE
+      - FEMALE
+      - OTHER
+      type: string
+      description: |-
+        * `MALE` - Male
+        * `FEMALE` - Female
+        * `OTHER` - Other
+    Gym:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        phone:
+          type: string
+          maxLength: 20
+        email:
+          nullable: true
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 100
+        pincode:
+          type: string
+          maxLength: 10
+        logo:
+          type: string
+          format: uri
+          nullable: true
+        code_prefix:
+          type: string
+          maxLength: 10
+        status:
+          allOf:
+          - $ref: '#/components/schemas/GymStatusEnum'
+          readOnly: true
+        trial_ends_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        days_left_in_trial:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - address
+      - city
+      - created_at
+      - days_left_in_trial
+      - id
+      - name
+      - phone
+      - pincode
+      - state
+      - status
+      - trial_ends_at
+      - updated_at
+    GymStatusEnum:
+      enum:
+      - TRIAL
+      - ACTIVE
+      - PAST_DUE
+      - SUSPENDED
+      type: string
+      description: |-
+        * `TRIAL` - 30-Day Free Trial
+        * `ACTIVE` - Active Subscription
+        * `PAST_DUE` - Past Due
+        * `SUSPENDED` - Suspended
+    GymSubscription:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        plan:
+          type: integer
+          nullable: true
+        plan_details:
+          allOf:
+          - $ref: '#/components/schemas/SaaSPlan'
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/GymSubscriptionStatusEnum'
+        trial_start:
+          type: string
+          format: date-time
+          readOnly: true
+        trial_end:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        active_until:
+          type: string
+          format: date-time
+          nullable: true
+        days_left:
+          type: string
+          readOnly: true
+      required:
+      - days_left
+      - gym
+      - id
+      - plan_details
+      - trial_end
+      - trial_start
+    GymSubscriptionStatusEnum:
+      enum:
+      - TRIAL
+      - ACTIVE
+      - EXPIRED
+      - CANCELLED
+      type: string
+      description: |-
+        * `TRIAL` - 30-Day Free Trial
+        * `ACTIVE` - Active Subscription
+        * `EXPIRED` - Expired
+        * `CANCELLED` - Cancelled
+    Member:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        member_id_code:
+          type: string
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 255
+        email:
+          nullable: true
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        phone:
+          type: string
+          maxLength: 20
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        dob:
+          type: string
+          format: date
+          nullable: true
+        emergency_contact:
+          type: string
+          nullable: true
+          maxLength: 50
+        photo:
+          type: string
+          format: uri
+          nullable: true
+        status:
+          $ref: '#/components/schemas/MemberStatusEnum'
+        joined_date:
+          type: string
+          format: date
+          readOnly: true
+        notes:
+          type: string
+          nullable: true
+        active_membership:
+          type: string
+          readOnly: true
+        total_paid:
+          type: string
+          readOnly: true
+      required:
+      - active_membership
+      - full_name
+      - gym
+      - id
+      - joined_date
+      - member_id_code
+      - phone
+      - total_paid
+    MemberMembership:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        member:
+          type: integer
+        member_name:
+          type: string
+          readOnly: true
+        member_code:
+          type: string
+          readOnly: true
+        plan:
+          type: integer
+          nullable: true
+        plan_name:
+          type: string
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        price_at_purchase:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/MemberMembershipStatusEnum'
+        frozen_until:
+          type: string
+          format: date
+          nullable: true
+        cancellation_reason:
+          type: string
+          nullable: true
+          maxLength: 255
+        cancelled_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        days_remaining:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - cancelled_at
+      - created_at
+      - days_remaining
+      - end_date
+      - gym
+      - id
+      - member
+      - member_code
+      - member_name
+      - plan_name
+      - price_at_purchase
+    MemberMembershipStatusEnum:
+      enum:
+      - ACTIVE
+      - EXPIRING_SOON
+      - EXPIRED
+      - FROZEN
+      - CANCELLED
+      type: string
+      description: |-
+        * `ACTIVE` - Active
+        * `EXPIRING_SOON` - Expiring Soon
+        * `EXPIRED` - Expired
+        * `FROZEN` - Frozen
+        * `CANCELLED` - Cancelled
+    MemberStatusEnum:
+      enum:
+      - ACTIVE
+      - EXPIRING_SOON
+      - EXPIRED
+      - INACTIVE
+      type: string
+      description: |-
+        * `ACTIVE` - Active
+        * `EXPIRING_SOON` - Expiring Soon
+        * `EXPIRED` - Expired
+        * `INACTIVE` - Inactive
+    MembershipPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        duration_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - gym
+      - id
+      - name
+      - price
+    MethodEnum:
+      enum:
+      - MANUAL
+      - QR
+      - BIOMETRIC
+      type: string
+      description: |-
+        * `MANUAL` - Manual Check-in
+        * `QR` - QR Scanner
+        * `BIOMETRIC` - Biometric
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        title:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        is_read:
+          type: boolean
+        notification_type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        channel:
+          type: string
+          maxLength: 20
+        delivery_status:
+          type: string
+          maxLength: 20
+        dedupe_key:
+          type: string
+          nullable: true
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - gym
+      - id
+      - message
+      - title
+    NotificationTypeEnum:
+      enum:
+      - MEMBERSHIP_EXPIRING
+      - PAYMENT_RECEIVED
+      - PAYMENT_PENDING
+      - TRIAL_ALERT
+      - SYSTEM
+      type: string
+      description: |-
+        * `MEMBERSHIP_EXPIRING` - Membership Expiring Soon
+        * `PAYMENT_RECEIVED` - Payment Received
+        * `PAYMENT_PENDING` - Payment Pending Alert
+        * `TRIAL_ALERT` - SaaS Trial Expiry Alert
+        * `SYSTEM` - System Alert
+    PaginatedAttendanceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendance'
+    PaginatedAuditLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLog'
+    PaginatedExpenseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expense'
+    PaginatedGymList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Gym'
+    PaginatedMemberList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Member'
+    PaginatedMemberMembershipList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberMembership'
+    PaginatedMembershipPlanList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MembershipPlan'
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    PaginatedPaymentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+    PaginatedSaaSPlanList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaaSPlan'
+    PaginatedStaffList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Staff'
+    PaginatedTrainerProfileList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainerProfile'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PaginatedWorkoutDayList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutDay'
+    PaginatedWorkoutExerciseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutExercise'
+    PaginatedWorkoutPlanList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutPlan'
+    PasswordResetConfirm:
+      type: object
+      properties:
+        uid:
+          type: integer
+        token:
+          type: string
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+      required:
+      - new_password
+      - token
+      - uid
+    PasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    PatchedAttendance:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        member:
+          type: integer
+        member_name:
+          type: string
+          readOnly: true
+        member_code:
+          type: string
+          readOnly: true
+        date:
+          type: string
+          format: date
+        check_in:
+          type: string
+          format: time
+        check_out:
+          type: string
+          format: time
+          nullable: true
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        notes:
+          type: string
+          nullable: true
+          maxLength: 255
+        membership_status:
+          type: string
+          readOnly: true
+    PatchedExpense:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        category_display:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        expense_date:
+          type: string
+          format: date
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedGym:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        phone:
+          type: string
+          maxLength: 20
+        email:
+          nullable: true
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 100
+        pincode:
+          type: string
+          maxLength: 10
+        logo:
+          type: string
+          format: uri
+          nullable: true
+        code_prefix:
+          type: string
+          maxLength: 10
+        status:
+          allOf:
+          - $ref: '#/components/schemas/GymStatusEnum'
+          readOnly: true
+        trial_ends_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        days_left_in_trial:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        member_id_code:
+          type: string
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 255
+        email:
+          nullable: true
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        phone:
+          type: string
+          maxLength: 20
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        dob:
+          type: string
+          format: date
+          nullable: true
+        emergency_contact:
+          type: string
+          nullable: true
+          maxLength: 50
+        photo:
+          type: string
+          format: uri
+          nullable: true
+        status:
+          $ref: '#/components/schemas/MemberStatusEnum'
+        joined_date:
+          type: string
+          format: date
+          readOnly: true
+        notes:
+          type: string
+          nullable: true
+        active_membership:
+          type: string
+          readOnly: true
+        total_paid:
+          type: string
+          readOnly: true
+    PatchedMemberMembership:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        member:
+          type: integer
+        member_name:
+          type: string
+          readOnly: true
+        member_code:
+          type: string
+          readOnly: true
+        plan:
+          type: integer
+          nullable: true
+        plan_name:
+          type: string
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        price_at_purchase:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        status:
+          $ref: '#/components/schemas/MemberMembershipStatusEnum'
+        frozen_until:
+          type: string
+          format: date
+          nullable: true
+        cancellation_reason:
+          type: string
+          nullable: true
+          maxLength: 255
+        cancelled_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        days_remaining:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedMembershipPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        duration_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedNotification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        title:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        is_read:
+          type: boolean
+        notification_type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        channel:
+          type: string
+          maxLength: 20
+        delivery_status:
+          type: string
+          maxLength: 20
+        dedupe_key:
+          type: string
+          nullable: true
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedPayment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        member:
+          type: integer
+        member_name:
+          type: string
+          readOnly: true
+        member_code:
+          type: string
+          readOnly: true
+        member_membership:
+          type: integer
+          nullable: true
+        receipt_no:
+          type: string
+          readOnly: true
+          nullable: true
+        amount_paid:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        due_amount:
+          type: string
+          readOnly: true
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatusEnum'
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        transaction_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        payment_date:
+          type: string
+          format: date
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        refunded_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        refund_reason:
+          type: string
+          nullable: true
+          maxLength: 255
+        refunded_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+    PatchedStaff:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        password:
+          type: string
+          writeOnly: true
+          minLength: 6
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedTrainerProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        trainer_name:
+          type: string
+          readOnly: true
+        trainer_email:
+          type: string
+          format: email
+          title: Email address
+          readOnly: true
+        trainer_phone:
+          type: string
+          nullable: true
+          readOnly: true
+        specialization:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+          nullable: true
+        salary_monthly:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        assigned_members:
+          type: array
+          items:
+            type: integer
+        assigned_members_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+        gym:
+          type: integer
+          nullable: true
+        gym_name:
+          type: string
+          readOnly: true
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+    PatchedWorkoutDay:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        workout_plan:
+          type: integer
+          readOnly: true
+        day_name:
+          type: string
+          maxLength: 100
+        order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        exercises:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutExercise'
+    PatchedWorkoutExercise:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        workout_day:
+          type: integer
+          readOnly: true
+        exercise_name:
+          type: string
+          maxLength: 255
+        sets:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        reps:
+          type: string
+          maxLength: 50
+        rest_seconds:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        notes:
+          type: string
+          nullable: true
+          maxLength: 255
+    PatchedWorkoutPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        created_by:
+          type: integer
+          nullable: true
+        created_by_name:
+          type: string
+          readOnly: true
+        assigned_members:
+          type: array
+          items:
+            type: integer
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutDay'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        member:
+          type: integer
+        member_name:
+          type: string
+          readOnly: true
+        member_code:
+          type: string
+          readOnly: true
+        member_membership:
+          type: integer
+          nullable: true
+        receipt_no:
+          type: string
+          readOnly: true
+          nullable: true
+        amount_paid:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        total_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        due_amount:
+          type: string
+          readOnly: true
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatusEnum'
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethodEnum'
+        transaction_id:
+          type: string
+          nullable: true
+          maxLength: 100
+        payment_date:
+          type: string
+          format: date
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        refunded_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        refund_reason:
+          type: string
+          nullable: true
+          maxLength: 255
+        refunded_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - amount_paid
+      - created_at
+      - due_amount
+      - gym
+      - id
+      - member
+      - member_code
+      - member_name
+      - receipt_no
+      - refunded_amount
+      - refunded_at
+      - total_amount
+    PaymentMethodEnum:
+      enum:
+      - CASH
+      - UPI
+      - CARD
+      - ONLINE
+      - OTHER
+      type: string
+      description: |-
+        * `CASH` - Cash
+        * `UPI` - UPI / GPay / PhonePe
+        * `CARD` - Credit/Debit Card
+        * `ONLINE` - Online Gateway
+        * `OTHER` - Other
+    PaymentStatusEnum:
+      enum:
+      - PAID
+      - PENDING
+      - PARTIAL
+      - REFUNDED
+      type: string
+      description: |-
+        * `PAID` - Fully Paid
+        * `PENDING` - Pending
+        * `PARTIAL` - Partially Paid
+        * `REFUNDED` - Refunded
+    RegisterOwner:
+      type: object
+      properties:
+        full_name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          maxLength: 20
+        password:
+          type: string
+          writeOnly: true
+          minLength: 6
+        gym_name:
+          type: string
+          maxLength: 255
+        gym_phone:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 100
+        pincode:
+          type: string
+          maxLength: 10
+      required:
+      - address
+      - city
+      - email
+      - full_name
+      - gym_name
+      - gym_phone
+      - password
+      - phone
+      - pincode
+      - state
+    RoleEnum:
+      enum:
+      - SUPERADMIN
+      - OWNER
+      - MANAGER
+      - STAFF
+      - TRAINER
+      - MEMBER
+      type: string
+      description: |-
+        * `SUPERADMIN` - Super Admin
+        * `OWNER` - Gym Owner
+        * `MANAGER` - Manager
+        * `STAFF` - Staff
+        * `TRAINER` - Trainer
+        * `MEMBER` - Member
+    SaaSPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        price_monthly:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        max_members:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        description:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - id
+      - name
+      - price_monthly
+      - slug
+    Staff:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        password:
+          type: string
+          writeOnly: true
+          minLength: 6
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - date_joined
+      - id
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TrainerProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        trainer_name:
+          type: string
+          readOnly: true
+        trainer_email:
+          type: string
+          format: email
+          title: Email address
+          readOnly: true
+        trainer_phone:
+          type: string
+          nullable: true
+          readOnly: true
+        specialization:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+          nullable: true
+        salary_monthly:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        assigned_members:
+          type: array
+          items:
+            type: integer
+        assigned_members_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - assigned_members_count
+      - created_at
+      - gym
+      - id
+      - trainer_email
+      - trainer_name
+      - trainer_phone
+      - user
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Email address
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+        gym:
+          type: integer
+          nullable: true
+        gym_name:
+          type: string
+          readOnly: true
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - gym_name
+      - id
+      - role
+      - username
+    VerifyEmail:
+      type: object
+      properties:
+        uid:
+          type: integer
+        token:
+          type: string
+      required:
+      - token
+      - uid
+    WorkoutDay:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        workout_plan:
+          type: integer
+          readOnly: true
+        day_name:
+          type: string
+          maxLength: 100
+        order:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        exercises:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutExercise'
+      required:
+      - day_name
+      - id
+      - workout_plan
+    WorkoutExercise:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        workout_day:
+          type: integer
+          readOnly: true
+        exercise_name:
+          type: string
+          maxLength: 255
+        sets:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        reps:
+          type: string
+          maxLength: 50
+        rest_seconds:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        notes:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - exercise_name
+      - id
+      - workout_day
+    WorkoutPlan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        gym:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        created_by:
+          type: integer
+          nullable: true
+        created_by_name:
+          type: string
+          readOnly: true
+        assigned_members:
+          type: array
+          items:
+            type: integer
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkoutDay'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by_name
+      - gym
+      - id
+      - title
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

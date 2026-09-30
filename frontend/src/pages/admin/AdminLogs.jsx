@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FileText, ShieldCheck } from 'lucide-react';
+import api from '../../services/api';
 
 export const AdminLogs = () => {
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get('/auth/audit-logs/').then((response) => setLogs(response.data.results || response.data)).finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className="space-y-6">
       <div>
@@ -10,18 +18,7 @@ export const AdminLogs = () => {
       </div>
 
       <div className="bg-white rounded-2xl p-6 border border-sand shadow-xs space-y-3 font-mono text-xs text-charcoal">
-        <div className="p-3 bg-cream-50 rounded-xl border border-sand flex items-center justify-between">
-          <span>[SYSTEM] Platform initialized under AcharyaWorks ecosystem.</span>
-          <span className="text-mutedGray">2026-08-22 17:25</span>
-        </div>
-        <div className="p-3 bg-cream-50 rounded-xl border border-sand flex items-center justify-between">
-          <span>[TENANT] Demo Gym 'Hercules Health Club' provisioned with 30-Day Free Trial.</span>
-          <span className="text-mutedGray">2026-08-22 17:49</span>
-        </div>
-        <div className="p-3 bg-cream-50 rounded-xl border border-sand flex items-center justify-between">
-          <span>[AUTH] Super Admin account 'admin@gymsuite.in' authenticated.</span>
-          <span className="text-mutedGray">2026-08-22 18:18</span>
-        </div>
+        {loading ? <p className="p-4 text-mutedGray">Loading activity...</p> : logs.length ? logs.map((log) => <div key={log.id} className="flex items-center justify-between rounded-xl border border-sand bg-cream-50 p-3"><span>[{log.action}] {log.entity} {log.entity_id || ''}</span><span className="text-mutedGray">{new Date(log.created_at).toLocaleString()}</span></div>) : <p className="p-4 text-mutedGray">No activity recorded yet.</p>}
       </div>
     </div>
   );

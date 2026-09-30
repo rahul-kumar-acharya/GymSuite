@@ -21,6 +21,7 @@ class MemberMembership(models.Model):
         ('ACTIVE', 'Active'),
         ('EXPIRING_SOON', 'Expiring Soon'),
         ('EXPIRED', 'Expired'),
+        ('FROZEN', 'Frozen'),
         ('CANCELLED', 'Cancelled'),
     )
 
@@ -31,6 +32,9 @@ class MemberMembership(models.Model):
     end_date = models.DateField()
     price_at_purchase = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='ACTIVE')
+    frozen_until = models.DateField(null=True, blank=True)
+    cancellation_reason = models.CharField(max_length=255, blank=True, null=True)
+    cancelled_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

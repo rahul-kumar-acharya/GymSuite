@@ -19,6 +19,9 @@ class Notification(models.Model):
     message = models.TextField()
     is_read = models.BooleanField(default=False)
     notification_type = models.CharField(max_length=30, choices=TYPE_CHOICES, default='SYSTEM')
+    channel = models.CharField(max_length=20, default='IN_APP')
+    delivery_status = models.CharField(max_length=20, default='PENDING')
+    dedupe_key = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { BarChart3, TrendingUp, DollarSign, Users, Award } from 'lucide-react';
+import { BarChart3, TrendingUp, DollarSign, Users, Award, Download } from 'lucide-react';
 
 export const Reports = () => {
   const [data, setData] = useState(null);
@@ -23,12 +23,23 @@ export const Reports = () => {
 
   const overview = data?.overview || {};
 
+  const downloadPayments = async () => {
+    const response = await api.get('/reports/payments.csv', { responseType: 'blob' });
+    const url = URL.createObjectURL(response.data);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'payments.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-8">
       <div>
         <h1 className="font-heading text-2xl sm:text-3xl font-bold text-espresso-800">Business Reports & Analytics</h1>
         <p className="text-xs text-mutedGray">Financial aggregation, membership renewal metrics, and profit margins</p>
       </div>
+      <div className="flex justify-end"><button type="button" onClick={downloadPayments} className="inline-flex items-center gap-2 rounded-xl border border-sand bg-white px-4 py-2.5 text-xs font-bold text-espresso-800"><Download className="h-4 w-4" /> Export payments</button></div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="bg-white rounded-2xl p-6 border border-sand shadow-xs space-y-2">
