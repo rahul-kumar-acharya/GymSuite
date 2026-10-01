@@ -70,6 +70,10 @@ class CanManageStaff(GymRolePermission):
     allowed_roles = {'OWNER'}
 
 
+class CanManageSaaSPlans(GymRolePermission):
+    allowed_roles = {'OWNER'}
+
+
 class CanViewAuditLogs(GymRolePermission):
     allowed_roles = {'OWNER', 'MANAGER'}
 

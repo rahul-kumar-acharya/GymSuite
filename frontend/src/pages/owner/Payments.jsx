@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { InputDialog } from '../../components/ActionDialogs';
 import { Award, Plus, Search, Receipt, Printer, X, RotateCcw, Download } from 'lucide-react';
 
 export const Payments = () => {
@@ -9,6 +10,7 @@ export const Payments = () => {
   const [showCollectModal, setShowCollectModal] = useState(false);
   const [selectedReceipt, setSelectedReceipt] = useState(null);
   const [paymentError, setPaymentError] = useState('');
+  const [refundPaymentTarget, setRefundPaymentTarget] = useState(null);
 
   const [formData, setFormData] = useState({
     member_id: '',
@@ -63,10 +65,14 @@ export const Payments = () => {
   };
 
   const refundPayment = async (payment) => {
-    const amount = window.prompt(`Refund amount (maximum ₹${payment.amount_paid - (payment.refunded_amount || 0)}):`);
-    if (!amount) return;
+    setRefundPaymentTarget(payment);
+    setPaymentError('');
+  };
+
+  const confirmRefund = async (amount) => {
     try {
-      await api.post(`/payments/${payment.id}/refund/`, { amount, reason: 'Owner initiated refund' });
+      await api.post(`/payments/${refundPaymentTarget.id}/refund/`, { amount, reason: 'Owner initiated refund' });
+      setRefundPaymentTarget(null);
       fetchPayments();
     } catch (err) {
       setPaymentError(err.response?.data?.detail || 'Refund failed.');
@@ -255,6 +261,7 @@ export const Payments = () => {
           </div>
         </div>
       )}
+      <InputDialog open={Boolean(refundPaymentTarget)} title="Refund payment" description={`Enter an amount up to ₹${refundPaymentTarget ? refundPaymentTarget.amount_paid - (refundPaymentTarget.refunded_amount || 0) : 0}. The refund will be recorded in the payment history.`} label="Refund amount (₹)" inputType="number" placeholder="0.00" confirmLabel="Confirm refund" error={paymentError} onCancel={() => setRefundPaymentTarget(null)} onConfirm={confirmRefund} />
 
     </div>
   );

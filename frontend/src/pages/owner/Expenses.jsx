@@ -6,6 +6,7 @@ export const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const [formData, setFormData] = useState({
     title: '',
@@ -37,7 +38,7 @@ export const Expenses = () => {
       setFormData({ title: '', category: 'RENT', amount: '', notes: '' });
       fetchExpenses();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to record expense');
+      setFormError(err.response?.data?.detail || err.response?.data?.message || 'Failed to record expense');
     }
   };
 
@@ -59,6 +60,7 @@ export const Expenses = () => {
           <span>Record Expense</span>
         </button>
       </div>
+      {formError && <div role="alert" className="rounded-xl bg-statusRed-bg px-4 py-3 text-xs font-semibold text-statusRed-text">{formError}</div>}
 
       <div className="bg-white rounded-2xl p-6 border border-sand shadow-xs flex items-center justify-between">
         <div>

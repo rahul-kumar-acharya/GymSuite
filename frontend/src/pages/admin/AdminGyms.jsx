@@ -5,6 +5,7 @@ import { Building2, Search, Edit2, ShieldAlert } from 'lucide-react';
 export const AdminGyms = () => {
   const [gyms, setGyms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchGyms();
@@ -26,7 +27,7 @@ export const AdminGyms = () => {
       await api.patch(`/gyms/superadmin/all-gyms/${gymId}/`, { status: newStatus });
       fetchGyms();
     } catch (err) {
-      alert('Failed to update gym status');
+      setError('Failed to update gym status.');
     }
   };
 
@@ -36,6 +37,7 @@ export const AdminGyms = () => {
         <h1 className="font-heading text-2xl sm:text-3xl font-bold text-espresso-800">All Registered Gyms</h1>
         <p className="text-xs text-mutedGray">Manage tenant accounts, update SaaS statuses (Trial, Active, Suspended)</p>
       </div>
+      {error && <div role="alert" className="rounded-xl bg-statusRed-bg px-4 py-3 text-xs font-semibold text-statusRed-text">{error}</div>}
 
       <div className="bg-white rounded-2xl border border-sand overflow-hidden shadow-xs">
         <div className="overflow-x-auto">

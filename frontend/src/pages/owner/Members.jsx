@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { InputDialog } from '../../components/ActionDialogs';
 import { Users, Plus, Search, Filter, Phone, Mail, Calendar, ShieldCheck, X, RefreshCw, PauseCircle, Ban } from 'lucide-react';
 
 export const Members = () => {
@@ -14,6 +15,8 @@ export const Members = () => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [renewPlan, setRenewPlan] = useState('');
   const [renewError, setRenewError] = useState('');
+  const [membershipDialog, setMembershipDialog] = useState(null);
+  const [membershipDialogError, setMembershipDialogError] = useState('');
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -99,18 +102,21 @@ export const Members = () => {
   const updateMembership = async (action, member) => {
     const membershipId = member.active_membership?.id;
     if (!membershipId) return;
+    setMembershipDialog({ action, member, membershipId });
+    setMembershipDialogError('');
+  };
+
+  const confirmMembershipUpdate = async (value) => {
     try {
-      if (action === 'freeze') {
-        const frozenUntil = window.prompt('Freeze until (YYYY-MM-DD):');
-        if (!frozenUntil) return;
-        await api.post(`/memberships/assigned/${membershipId}/freeze/`, { frozen_until: frozenUntil });
+      if (membershipDialog.action === 'freeze') {
+        await api.post(`/memberships/assigned/${membershipDialog.membershipId}/freeze/`, { frozen_until: value });
       } else {
-        const reason = window.prompt('Cancellation reason (optional):') || '';
-        await api.post(`/memberships/assigned/${membershipId}/cancel/`, { reason });
+        await api.post(`/memberships/assigned/${membershipDialog.membershipId}/cancel/`, { reason: value });
       }
+      setMembershipDialog(null);
       fetchMembers();
     } catch (err) {
-      setFormError(err.response?.data?.detail || 'Membership update failed.');
+      setMembershipDialogError(err.response?.data?.detail || 'Membership update failed.');
     }
   };
 
@@ -359,6 +365,7 @@ export const Members = () => {
           </form>
         </div>
       )}
+      <InputDialog open={Boolean(membershipDialog)} title={membershipDialog?.action === 'freeze' ? `Freeze ${membershipDialog?.member?.full_name || 'membership'}` : `Cancel ${membershipDialog?.member?.full_name || 'membership'}`} description={membershipDialog?.action === 'freeze' ? 'Choose the date this membership should become active again.' : 'Add a reason for the cancellation. This will be stored in the membership history.'} label={membershipDialog?.action === 'freeze' ? 'Frozen until' : 'Cancellation reason'} inputType={membershipDialog?.action === 'freeze' ? 'date' : 'text'} placeholder={membershipDialog?.action === 'freeze' ? 'YYYY-MM-DD' : 'Optional reason'} confirmLabel={membershipDialog?.action === 'freeze' ? 'Freeze membership' : 'Cancel membership'} error={membershipDialogError} onCancel={() => setMembershipDialog(null)} onConfirm={confirmMembershipUpdate} />
 
     </div>
   );

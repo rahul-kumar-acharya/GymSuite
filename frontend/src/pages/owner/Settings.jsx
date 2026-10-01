@@ -5,6 +5,7 @@ import { Building2, Save, CheckCircle2 } from 'lucide-react';
 export const Settings = () => {
   const [gym, setGym] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchGym();
@@ -26,7 +27,7 @@ export const Settings = () => {
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err) {
-      alert('Failed to save gym settings');
+      setError('Failed to save gym settings.');
     }
   };
 
@@ -38,6 +39,7 @@ export const Settings = () => {
         <h1 className="font-heading text-2xl sm:text-3xl font-bold text-espresso-800">Gym Settings</h1>
         <p className="text-xs text-mutedGray">Update gym contact details, address, and code prefix for member IDs</p>
       </div>
+      {error && <div role="alert" className="rounded-xl bg-statusRed-bg px-4 py-3 text-xs font-semibold text-statusRed-text">{error}</div>}
 
       <div className="bg-white rounded-3xl p-8 border border-sand shadow-xs space-y-6">
         {saved && (
